@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Methods - SignSentry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h1>SignSentry</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="detection-options">
+        <div class="container">
+            <h1>Choose Detection Method</h1>
+            <p>Select how you want to detect traffic signs</p>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h2>Webcam Detection</h2>
+                    <p>Use your webcam for real-time traffic sign detection</p>
+                    <a href="{{ url_for('webcam_detection') }}" class="btn btn-primary">Use Webcam</a>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h2>Image Upload</h2>
+                    <p>Upload an image to detect traffic signs</p>
+                    <a href="{{ url_for('image_detection') }}" class="btn btn-primary">Upload Image</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h2>SignSentry</h2>
+            </div>
+            <p>&copy; 2025 SignSentry. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSentry - AI Traffic Sign Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h1>SignSentry</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>AI-Powered Traffic Sign Detection</h1>
+                <p>Enhance road safety with real-time traffic sign recognition using advanced YOLO technology</p>
+                <a href="{{ url_for('detection_methods') }}" class="btn btn-primary">Get Started</a>
+            </div>
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='images/hero-image.svg') }}" alt="Traffic Sign Detection Illustration">
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About SignSentry</h2>
+            <p>SignSentry is an advanced traffic sign detection system that uses YOLO (You Only Look Once) technology to identify and classify traffic signs in real-time. Our system helps improve road safety by providing instant recognition of traffic signs through webcam feeds or uploaded images.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>Real-time Detection</h3>
+                    <p>Process live video feeds with minimal latency</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-image"></i>
+                    <h3>Image Analysis</h3>
+                    <p>Upload and analyze images for traffic sign detection</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>High Accuracy</h3>
+                    <p>Trained on diverse datasets for reliable recognition</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Choose Input Method</h3>
+                    <p>Select between webcam feed or image upload</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>AI Processing</h3>
+                    <p>Our YOLO model analyzes the visual input</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Sign Detection</h3>
+                    <p>Traffic signs are identified with bounding boxes</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Classification</h3>
+                    <p>Each sign is classified with confidence score</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="cta">
+        <div class="container">
+            <h2>Ready to Experience SignSentry?</h2>
+            <p>Try our traffic sign detection system now and see the power of AI in action</p>
+            <a href="{{ url_for('detection_methods') }}" class="btn btn-primary">Get Started</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h2>SignSentry</h2>
+            </div>
+            <p>&copy; 2025 SignSentry. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+

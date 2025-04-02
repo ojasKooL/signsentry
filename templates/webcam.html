@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Detection - SignSentry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h1>SignSentry</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('detection_methods') }}">Detection Methods</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="webcam-detection">
+        <div class="container">
+            <h1>Webcam Traffic Sign Detection</h1>
+            <p>Point your camera at traffic signs for real-time detection</p>
+            
+            <div class="detection-container">
+                <div class="video-container">
+                    <div class="video-status" id="video-status">
+                        <i class="fas fa-video-slash"></i>
+                        <p>Camera is off</p>
+                    </div>
+                    <img id="video-feed" src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Live Video Feed">
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="toggle-stream" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Start Stream
+                </button>
+            </div>
+        
+        <div class="detection-info">
+            <h2>Detection Results</h2>
+            <div class="info-container" id="detection-results">
+                <p>Start the stream to begin detection.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h2>SignSentry</h2>
+            </div>
+            <p>&copy; 2025 SignSentry. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let isStreaming = false;
+        
+        function toggleStream() {
+            let videoFeed = document.getElementById('video-feed');
+            let button = document.getElementById('toggle-stream');
+            let videoStatus = document.getElementById('video-status');
+            
+            if (isStreaming) {
+                videoFeed.src = "{{ url_for('static', filename='images/placeholder.svg') }}";
+                videoFeed.style.display = "none";
+                videoStatus.style.display = "flex";
+                button.innerHTML = '<i class="fas fa-play"></i> Start Stream';
+                document.getElementById('detection-results').innerHTML = '<p>Start the stream to begin detection.</p>';
+            } else {
+                videoFeed.src = "{{ url_for('video_feed') }}";
+                videoFeed.style.display = "block";
+                videoStatus.style.display = "none";
+                button.innerHTML = '<i class="fas fa-stop"></i> Stop Stream';
+                document.getElementById('detection-results').innerHTML = '<p>Analyzing video feed...</p>';
+            }
+            
+            isStreaming = !isStreaming;
+        }
+        
+        document.getElementById('toggle-stream').addEventListener('click', toggleStream);
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+

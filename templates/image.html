@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Detection - SignSentry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h1>SignSentry</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('detection_methods') }}">Detection Methods</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="image-detection">
+        <div class="container">
+            <h1>Image Traffic Sign Detection</h1>
+            <p>Upload an image to detect traffic signs</p>
+            
+            <div class="detection-container">
+                <div class="upload-section">
+                    <h2>Upload Image</h2>
+                    <div class="upload-container">
+                        <div class="upload-area" id="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop an image or click to browse</p>
+                            <input type="file" id="file-input" accept="image/*">
+                        </div>
+                        <div class="file-info" id="file-info">
+                            <p>No file selected</p>
+                        </div>
+                        <button id="upload-button" class="btn btn-primary" disabled>
+                            <i class="fas fa-upload"></i> Process Image
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <h2>Detection Result</h2>
+                    <div class="result-container">
+                        <div class="image-result">
+                            <div class="image-placeholder" id="result-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p>Processed image will appear here</p>
+                            </div>
+                            <img id="uploaded-img" src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Processed Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-placeholder.svg') }}" alt="SignSentry Logo">
+                <h2>SignSentry</h2>
+            </div>
+            <p>&copy; 2025 SignSentry. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const uploadArea = document.getElementById('upload-area');
+        const fileInfo = document.getElementById('file-info');
+        const uploadButton = document.getElementById('upload-button');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        const uploadedImg = document.getElementById('uploaded-img');
+        
+        // Handle file selection
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                fileInfo.innerHTML = `<p><i class="fas fa-file-image"></i> ${fileName}</p>`;
+                uploadButton.disabled = false;
+            } else {
+                fileInfo.innerHTML = `<p>No file selected</p>`;
+                uploadButton.disabled = true;
+            }
+        });
+        
+        // Handle drag and drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                const fileName = fileInput.files[0].name;
+                fileInfo.innerHTML = `<p><i class="fas fa-file-image"></i> ${fileName}</p>`;
+                uploadButton.disabled = false;
+            }
+        });
+        
+        // Handle click on upload area
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        // Handle image upload
+        uploadButton.addEventListener('click', function() {
+            if (fileInput.files.length === 0) {
+                alert("Please select an image file first.");
+                return;
+            }
+            
+            // Show loading state
+            uploadButton.disabled = true;
+            uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            let formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            
+            fetch('{{ url_for("upload_image") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                uploadedImg.src = URL.createObjectURL(blob);
+                uploadedImg.style.display = "block";
+                resultPlaceholder.style.display = "none";
+                
+                // Reset button state
+                uploadButton.disabled = false;
+                uploadButton.innerHTML = '<i class="fas fa-upload"></i> Process Image';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while processing the image.");
+                
+                // Reset button state
+                uploadButton.disabled = false;
+                uploadButton.innerHTML = '<i class="fas fa-upload"></i> Process Image';
+            });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+
