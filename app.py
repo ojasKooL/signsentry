@@ -9,11 +9,11 @@ from werkzeug.utils import secure_filename
 port = int(os.environ.get("PORT", 5000))
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-MODEL_PATH = 'C:/JS/signsentry/server/models/best.pt'
-
 # Ensure uploads folder is inside the project directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Gets the directory of app.py
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+
+MODEL_PATH = os.path.join(BASE_DIR, 'models', 'best.pt')
 
 # Create the uploads folder if it doesn't exist
 if not os.path.exists(UPLOAD_FOLDER):
