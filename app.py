@@ -6,24 +6,16 @@ import numpy as np
 from ultralytics import YOLO
 from werkzeug.utils import secure_filename
 
-port = int(os.environ.get("PORT", 5000))
+port = int(os.environ.get("PORT", 10000))
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
 # Ensure uploads folder is inside the project directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Gets the directory of app.py
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-
+STATIC_UPLOAD_FOLDER = os.path.join("static", "uploads")
+os.makedirs(STATIC_UPLOAD_FOLDER, exist_ok=True)
 MODEL_PATH = os.path.join(BASE_DIR, 'models', 'best.pt')
 
-# Create the uploads folder if it doesn't exist
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)  
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = STATIC_UPLOAD_FOLDER
 
 model = YOLO(MODEL_PATH)
 
@@ -71,18 +63,22 @@ def generate_frames():
 
 @app.route("/")
 def home():
+    print("Home page accessed")
     return render_template("index.html")
 
 @app.route('/detection_methods')
 def detection_methods():
+    print("Detection methods page accessed")
     return render_template("detection.html")
 
 @app.route('/webcam_detection')
 def webcam_detection():
+    print("Webcam detection page accessed")
     return render_template("webcam.html")
 
 @app.route('/image_detection')
 def image_detection():
+    print("Image detection page accessed")
     return render_template("image.html")
 
 @app.route('/video_feed')
@@ -99,7 +95,7 @@ def upload_image():
         return jsonify({'error': 'No selected file'})
 
     filename = secure_filename(file.filename)
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    filepath = os.path.join(STATIC_UPLOAD_FOLDER, filename)
     file.save(filepath)
 
     # Load the image
@@ -124,7 +120,7 @@ def upload_image():
                         0.6, (255, 0, 0), 2)
 
     # Save the processed image
-    processed_filepath = os.path.join(UPLOAD_FOLDER, f"processed_{filename}")
+    processed_filepath = os.path.join(STATIC_UPLOAD_FOLDER, f"processed_{filename}")
     cv2.imwrite(processed_filepath, img)
 
     return send_file(processed_filepath, mimetype='image/jpeg')
