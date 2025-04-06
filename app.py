@@ -120,10 +120,13 @@ def upload_image():
                         0.6, (255, 0, 0), 2)
 
     # Save the processed image
-    processed_filepath = os.path.join(STATIC_UPLOAD_FOLDER, f"processed_{filename}")
+    processed_filename = f"processed_{filename}"
+    processed_filepath = os.path.join(STATIC_UPLOAD_FOLDER, processed_filename)
     cv2.imwrite(processed_filepath, img)
 
-    return send_file(processed_filepath, mimetype='image/jpeg')
+    # Return the relative URL to be rendered in HTML
+    image_url = f"/static/uploads/{processed_filename}"
+    return jsonify({'image_url': image_url})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
