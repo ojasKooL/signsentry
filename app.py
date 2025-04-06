@@ -6,6 +6,7 @@ import numpy as np
 from ultralytics import YOLO
 from werkzeug.utils import secure_filename
 
+port = int(os.environ.get("PORT", 5000))
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
 MODEL_PATH = 'C:/JS/signsentry/server/models/best.pt'  # Adjust path if needed
@@ -129,5 +130,5 @@ def upload_image():
     return send_file(processed_filepath, mimetype='image/jpeg')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=port)
 
